@@ -1,0 +1,2 @@
+include ':stateful', ':sample'
+rootProject.name='Stateful'
