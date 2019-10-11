@@ -5,6 +5,13 @@ import android.os.Parcelable
 import java.io.Serializable
 
 /**
+ * Returns the value corresponding to the given [key],
+ * or `null` if such a key is not present in the Bundle.
+ */
+@Suppress("UNCHECKED_CAST", "EXTENSION_SHADOWED_BY_MEMBER")
+fun <T> Bundle.get(key: String): T? = get(key) as T?
+
+/**
  * Associates the specified [value] with the specified [key] in the Bundle.
  */
 fun <T> Bundle.put(key: String, value: T) {
@@ -37,10 +44,3 @@ fun <T> Bundle.put(key: String, value: T) {
         else -> throw IllegalArgumentException("Unsupported type of value : ${(value as Any)::class.java}")
     }
 }
-
-/**
- * Returns the value corresponding to the given [key],
- * or `null` if such a key is not present in the Bundle.
- */
-@Suppress("UNCHECKED_CAST", "EXTENSION_SHADOWED_BY_MEMBER")
-fun <T> Bundle.get(key: String): T? = get(key) as T?
