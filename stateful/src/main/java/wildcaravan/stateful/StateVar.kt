@@ -13,11 +13,15 @@ class StateVar<T>(private val initializer: () -> T) : State<T>, ReadWritePropert
     }
 
     override fun onRestore(value: T) {
+        check(!activated)
+
         _value = value
         activated = true
     }
 
     override fun onSave(): T {
+        check(activated)
+
         activated = false
 
         @Suppress("UNCHECKED_CAST")
@@ -25,24 +29,24 @@ class StateVar<T>(private val initializer: () -> T) : State<T>, ReadWritePropert
     }
 
     override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        require(activated) { "Unstable state before restoring or after saving" }
+        check(activated) { "Unstable state before restoring or after saving" }
 
         @Suppress("UNCHECKED_CAST")
         return _value as T
     }
 
     override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-        require(activated) { "Unstable state before restoring or after saving" }
+        check(activated) { "Unstable state before restoring or after saving" }
         _value = value
     }
 }
 
-class StateVarProvider<T>(private val initializer: () -> T) {
-    operator fun provideDelegate(thisRef: Stateful, property: KProperty<*>): StateVar<T> {
-        val className = thisRef::class.java.name
+class StateVarProvider<T>(private val parent: Stateful, private val initializer: () -> T) {
+    operator fun provideDelegate(thisRef: Any?, property: KProperty<*>): StateVar<T> {
+        val className = parent::class.java.name
         val key = "%s@%s".format(property.name, className)
 
-        return StateVar(initializer).also { thisRef.register(key, it) }
+        return StateVar(initializer).also { parent.register(key, it) }
     }
 }
 
@@ -50,4 +54,4 @@ fun <T> Stateful.state(key: String, initializer: () -> T) =
     StateVar(initializer).also { register(key, it) }
 
 fun <T> Stateful.state(initializer: () -> T) =
-    StateVarProvider(initializer)
+    StateVarProvider(this, initializer)
