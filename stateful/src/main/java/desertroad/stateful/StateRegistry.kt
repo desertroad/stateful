@@ -1,7 +1,7 @@
-package wildcaravan.stateful
+package desertroad.stateful
 
 import android.os.Bundle
-import wildcaravan.os.put
+import desertroad.os.put
 
 class StateRegistry : Stateful {
     private val states = mutableMapOf<String, State<*>>()

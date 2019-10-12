@@ -1,4 +1,4 @@
-package wildcaravan.os
+package desertroad.os
 
 import android.os.Bundle
 import android.os.Parcelable

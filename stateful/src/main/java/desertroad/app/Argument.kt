@@ -1,8 +1,8 @@
-package wildcaravan.app
+package desertroad.app
 
 import android.app.Activity
 import androidx.fragment.app.Fragment
-import wildcaravan.os.get
+import desertroad.os.get
 
 fun <T> Activity.arg(key: String): T? = intent.extras?.get<T>(key)
 

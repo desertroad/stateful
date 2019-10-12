@@ -1,4 +1,4 @@
-package wildcaravan.stateful
+package desertroad.stateful
 
 interface State<T> {
     fun onInit() = Unit

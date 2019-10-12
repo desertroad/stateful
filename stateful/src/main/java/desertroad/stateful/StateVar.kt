@@ -1,4 +1,4 @@
-package wildcaravan.stateful
+package desertroad.stateful
 
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty

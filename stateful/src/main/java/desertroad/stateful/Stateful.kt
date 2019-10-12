@@ -1,4 +1,4 @@
-package wildcaravan.stateful
+package desertroad.stateful
 
 import android.os.Bundle
 

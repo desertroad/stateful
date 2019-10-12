@@ -1,11 +1,11 @@
-package wildcaravan.stateful.app
+package desertroad.stateful.app
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import wildcaravan.stateful.StateRegistry
-import wildcaravan.stateful.Stateful
+import androidx.fragment.app.Fragment
+import desertroad.stateful.StateRegistry
+import desertroad.stateful.Stateful
 
-abstract class StatefulActivity : AppCompatActivity(), Stateful by StateRegistry() {
+abstract class StatefulFragment : Fragment(), Stateful by StateRegistry() {
 
     protected open fun onPreRestoreStates() = Unit
 
