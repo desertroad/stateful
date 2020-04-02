@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="desertroad.stateful">
+
+    <uses-sdk android:targetSdkVersion="28" />
+
+    <application>
+        <activity android:name=".SavedBundleTest$ActivityWithState" />
+    </application>
+
+</manifest>
