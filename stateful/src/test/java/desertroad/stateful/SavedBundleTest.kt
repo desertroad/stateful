@@ -2,6 +2,8 @@ package desertroad.stateful
 
 import android.os.Build
 import androidx.activity.ComponentActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.testing.launchFragment
 import androidx.test.core.app.launchActivity
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -45,8 +47,44 @@ class SavedBundleTest {
         }
     }
 
+    @Test
+    fun stateOnFragment() {
+        launchFragment<FragmentWithState>().run {
+            onFragment {
+                assertNull(it.state)
+                it.state = "Hello"
+                assertEquals(it.state, "Hello")
+            }
+
+            recreate()
+
+            onFragment {
+                assertEquals(it.state, "Hello")
+            }
+        }
+
+        launchFragment<FragmentWithState>().run {
+            onFragment {
+                assertNull(it.namedState)
+                it.namedState = -321L
+                assertEquals(it.namedState as Long?, -321L)
+            }
+
+            recreate()
+
+            onFragment {
+                assertEquals(it.namedState, -321L)
+            }
+        }
+    }
+
     class ActivityWithState : ComponentActivity() {
         var state: Int? by savedState()
         var namedState: Double? by savedState("test")
+    }
+
+    class FragmentWithState : Fragment() {
+        var state: String? by savedState()
+        var namedState: Long? by savedState("unit")
     }
 }
