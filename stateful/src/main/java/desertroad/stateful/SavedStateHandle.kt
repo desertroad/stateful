@@ -9,4 +9,4 @@ operator fun <T> SavedStateHandle.getValue(thisRef: Any?, property: KProperty<*>
 operator fun <T> SavedStateHandle.setValue(thisRef: Any?, property: KProperty<*>, value: T?) =
     set(property.name, value)
 
-inline fun <reified T> SavedStateHandle.entry(key: String) = SavedStateHandleEntry<T>(this, key)
+fun SavedStateHandle.entry(key: String) = SavedStateHandleEntry(this, key)

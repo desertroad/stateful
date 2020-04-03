@@ -15,7 +15,7 @@ private val SavedStateRegistryOwner.defaultSavedBundle: SavedBundle
 
 fun SavedStateRegistryOwner.savedState() = defaultSavedBundle
 
-inline fun <reified T> SavedStateRegistryOwner.savedState(name: String) = savedState().Named<T>(name)
+fun SavedStateRegistryOwner.savedState(name: String) = savedState().Named(name)
 
 class SavedBundle(registry: SavedStateRegistry, key: String) :
     SavedStateRegistry.SavedStateProvider {
@@ -35,12 +35,12 @@ class SavedBundle(registry: SavedStateRegistry, key: String) :
     operator fun <T> setValue(thisRef: Any?, property: KProperty<*>, value: T?) =
         state.put(property.name, value)
 
-    inner class Named<T>(private val name: String) {
+    inner class Named(private val name: String) {
         @Suppress("UNCHECKED_CAST")
-        operator fun getValue(thisRef: Any?, property: KProperty<*>): T? =
+        operator fun <T> getValue(thisRef: Any?, property: KProperty<*>): T? =
             state.get(name) as T?
 
-        operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) =
+        operator fun <T> setValue(thisRef: Any?, property: KProperty<*>, value: T?) =
             state.put(name, value)
     }
 }

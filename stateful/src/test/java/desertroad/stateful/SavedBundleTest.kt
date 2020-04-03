@@ -20,6 +20,7 @@ class SavedBundleTest {
             onActivity {
                 assertNull(it.state)
                 it.state = 123
+                assertEquals(it.state, 123)
             }
 
             recreate()
@@ -33,6 +34,7 @@ class SavedBundleTest {
             onActivity {
                 assertNull(it.namedState)
                 it.namedState = -0.123
+                assertEquals(it.namedState as Double?, -0.123)
             }
 
             recreate()
