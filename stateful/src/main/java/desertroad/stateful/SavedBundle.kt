@@ -13,10 +13,19 @@ private val defaultSavedBundles = WeakHashMap<SavedStateRegistryOwner, SavedBund
 private val SavedStateRegistryOwner.defaultSavedBundle: SavedBundle
     get() = defaultSavedBundles.getOrPut(this) { SavedBundle(this, DEFAULT_SAVED_BUNDLE) }
 
+/**
+ *
+ */
 fun SavedStateRegistryOwner.savedState() = defaultSavedBundle
 
+/**
+ *
+ */
 fun SavedStateRegistryOwner.savedState(name: String) = savedState().Entry(name)
 
+/**
+ *
+ */
 class SavedBundle(registry: SavedStateRegistry, key: String) {
     constructor(owner: SavedStateRegistryOwner, key: String) : this(owner.savedStateRegistry, key)
 
@@ -25,13 +34,22 @@ class SavedBundle(registry: SavedStateRegistry, key: String) {
         registry.consumeRestoredStateForKey(key) ?: Bundle()
     }
 
+    /**
+     *
+     */
     operator fun provideDelegate(thisRef: Any?, property: KProperty<*>) = Entry(property.name)
 
     inner class Entry(private val name: String) {
+        /**
+         *
+         */
         @Suppress("UNCHECKED_CAST")
         operator fun <T> getValue(thisRef: Any?, property: KProperty<*>): T? =
             state.get(name) as T?
 
+        /**
+         *
+         */
         operator fun <T> setValue(thisRef: Any?, property: KProperty<*>, value: T?) =
             state.put(name, value)
     }
