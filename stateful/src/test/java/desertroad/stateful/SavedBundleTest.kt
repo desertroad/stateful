@@ -33,7 +33,7 @@ class SavedBundleTest {
             onActivity {
                 assertNull(it.namedState)
                 it.namedState = -0.123
-                assertEquals(it.namedState as Double?, -0.123)
+                assertEquals(it.namedState as Any?, -0.123)
             }
 
             recreate()
@@ -64,7 +64,7 @@ class SavedBundleTest {
             onFragment {
                 assertNull(it.namedState)
                 it.namedState = -321L
-                assertEquals(it.namedState as Long?, -321L)
+                assertEquals(it.namedState as Any?, -321L)
             }
 
             recreate()

@@ -15,27 +15,19 @@ private val SavedStateRegistryOwner.defaultSavedBundle: SavedBundle
 
 fun SavedStateRegistryOwner.savedState() = defaultSavedBundle
 
-fun SavedStateRegistryOwner.savedState(name: String) = savedState().Named(name)
+fun SavedStateRegistryOwner.savedState(name: String) = savedState().Entry(name)
 
-class SavedBundle(registry: SavedStateRegistry, key: String) :
-    SavedStateRegistry.SavedStateProvider {
+class SavedBundle(registry: SavedStateRegistry, key: String) {
     constructor(owner: SavedStateRegistryOwner, key: String) : this(owner.savedStateRegistry, key)
 
-    val state: Bundle by lazy {
-        registry.registerSavedStateProvider(key, this)
+    private val state: Bundle by lazy {
+        registry.registerSavedStateProvider(key, ::state)
         registry.consumeRestoredStateForKey(key) ?: Bundle()
     }
 
-    override fun saveState(): Bundle = state
+    operator fun provideDelegate(thisRef: Any?, property: KProperty<*>) = Entry(property.name)
 
-    @Suppress("UNCHECKED_CAST")
-    operator fun <T> getValue(thisRef: Any?, property: KProperty<*>): T? =
-        state.get(property.name) as T?
-
-    operator fun <T> setValue(thisRef: Any?, property: KProperty<*>, value: T?) =
-        state.put(property.name, value)
-
-    inner class Named(private val name: String) {
+    inner class Entry(private val name: String) {
         @Suppress("UNCHECKED_CAST")
         operator fun <T> getValue(thisRef: Any?, property: KProperty<*>): T? =
             state.get(name) as T?

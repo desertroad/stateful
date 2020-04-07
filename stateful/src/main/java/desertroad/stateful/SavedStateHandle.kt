@@ -3,10 +3,8 @@ package desertroad.stateful
 import androidx.lifecycle.SavedStateHandle
 import kotlin.reflect.KProperty
 
-operator fun <T> SavedStateHandle.getValue(thisRef: Any?, property: KProperty<*>): T? =
-    get<T>(property.name)
-
-operator fun <T> SavedStateHandle.setValue(thisRef: Any?, property: KProperty<*>, value: T?) =
-    set(property.name, value)
-
 fun SavedStateHandle.entry(key: String) = SavedStateHandleEntry(this, key)
+
+operator fun SavedStateHandle.provideDelegate(thisRef: Any?, property: KProperty<*>) =
+    entry(property.name)
+
