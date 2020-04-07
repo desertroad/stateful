@@ -1,4 +1,3 @@
-@file:JvmName("Bundles")
 package desertroad.stateful
 
 import android.os.Binder
@@ -8,8 +7,9 @@ import android.util.Size
 import android.util.SizeF
 import java.io.Serializable
 
-private fun UnsupportedType(key: String, value: Any) =
-    IllegalArgumentException("Unsupported type ${value.javaClass.name} for key \"$key\"")
+private fun onUnsupportedType(key: String, value: Any) : Nothing {
+    throw IllegalArgumentException("Unsupported type ${value.javaClass.name} for key \"$key\"")
+}
 
 @Suppress("UNCHECKED_CAST")
 internal fun Bundle.put(key: String, value: Any?) = when (value) {
@@ -38,11 +38,11 @@ internal fun Bundle.put(key: String, value: Any?) = when (value) {
         Array<String>::class.java -> putStringArray(key, value as Array<String>)
         Array<CharSequence>::class.java -> putCharSequenceArray(key, value as Array<CharSequence>)
         Array<Serializable>::class.java -> putSerializable(key, value)
-        else -> throw UnsupportedType(key, value)
+        else -> onUnsupportedType(key, value)
     }
     is Serializable -> putSerializable(key, value)
     is Binder -> putBinder(key, value)
     is Size -> putSize(key, value)
     is SizeF -> putSizeF(key, value)
-    else -> throw UnsupportedType(key, value)
+    else -> onUnsupportedType(key, value)
 }
