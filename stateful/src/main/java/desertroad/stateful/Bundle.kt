@@ -33,11 +33,11 @@ internal fun Bundle.put(key: String, value: Any?) = when (value) {
     is IntArray -> putIntArray(key, value)
     is LongArray -> putLongArray(key, value)
     is ShortArray -> putShortArray(key, value)
-    is Array<*> -> when (value.javaClass) {
-        Array<Parcelable>::class.java -> putParcelableArray(key, value as Array<Parcelable>)
-        Array<String>::class.java -> putStringArray(key, value as Array<String>)
-        Array<CharSequence>::class.java -> putCharSequenceArray(key, value as Array<CharSequence>)
-        Array<Serializable>::class.java -> putSerializable(key, value)
+    is Array<*> -> when (value::class) {
+        Array<Parcelable>::class -> putParcelableArray(key, value as Array<Parcelable>)
+        Array<String>::class -> putStringArray(key, value as Array<String>)
+        Array<CharSequence>::class -> putCharSequenceArray(key, value as Array<CharSequence>)
+        Array<Serializable>::class -> putSerializable(key, value)
         else -> onUnsupportedType(key, value)
     }
     is Serializable -> putSerializable(key, value)
